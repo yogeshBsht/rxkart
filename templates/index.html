@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block body %}
+    <h2>Medicine Details</h2>
+    {% for medicine, qty in mykart.items() %}
+        <ul>{{medicine}} with {{qty}} units selected</ul>
+    {% endfor %}
+{% endblock %}

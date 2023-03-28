@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block body %}
+    <h2>Add medicines</h2>
+    <form action="/mykart" method="POST")>
+        <label for="medicine">Select medicine(s):</label>
+        <select name="medicine" id="medicine">
+            {% for medicine in medicines %}
+                <p>
+                    <option value={{ medicine.name }}>{{ medicine.name }}</option>
+                </p>
+            {% endfor %}
+        </select>
+        <label for="qty">Quantity:</label>
+        <input type="text" id="qty" name="qty">
+        <input type="submit" value="Submit" />
+    </form>
+{% endblock %}
