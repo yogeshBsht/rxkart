@@ -2,7 +2,7 @@
 
 {% block body %}
     <h2>Add medicines</h2>
-    <form action="/mykart" method="POST")>
+    <form action="/mykart" method="GET")>
         <label for="medicine">Select medicine(s):</label>
         <select name="medicine" id="medicine">
             {% for medicine in medicines %}

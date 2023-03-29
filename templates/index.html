@@ -2,7 +2,27 @@
 
 {% block body %}
     <h2>Medicine Details</h2>
-    {% for medicine, qty in mykart.items() %}
-        <ul>{{medicine}} with {{qty}} units selected</ul>
-    {% endfor %}
+    <table border="1">
+        <tr>
+          <th>S.No.</th>
+          <th>Medicine</th>
+          <th>Qty</th>
+        </tr>
+        {% for medicine, qty in mykart.items() %}
+        <tr>
+          <td></td>
+          <td>{{medicine}}</td>
+          <td>{{qty}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <script>
+        var table = document.getElementsByTagName('table')[0],
+        rows = table.getElementsByTagName('tr'),
+        text = 'textContent' in document ? 'textContent' : 'innerText';
+      
+      for (var i = 1, len = rows.length; i < len; i++) {
+        rows[i].children[0][text] = i;
+      }
+      </script>
 {% endblock %}

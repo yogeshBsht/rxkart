@@ -23,9 +23,9 @@ mykart = {}
 async def root(request:Request):
     return templates.TemplateResponse("home.html", {"request": request, "medicines":medicine_list})
 
-@app.post("/mykart", response_class=HTMLResponse)
+@app.get("/mykart", response_class=HTMLResponse)
 async def index(request:Request, medicine:str, qty:int = 1):
-    mykart.setdefault(medicine, qty)
+    mykart.update({medicine: qty})
     return templates.TemplateResponse("index.html", {"request": request, "mykart":mykart})
 
 
