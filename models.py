@@ -1,6 +1,6 @@
-from sqlalchemy import Boolean, Column, Integer, String
+from sqlalchemy import Column, Integer, String, JSON
 
-from .database import Base
+from database import Base
 
 
 class User(Base):
@@ -16,5 +16,11 @@ class Item(Base):
 
     item_id = Column(Integer, primary_key=True, index=True)
     title = Column(String, index=True)
-    description = Column(String)
     qty = Column(Integer, default=0)
+
+
+class Order(Base):
+    __tablename__ = "orders"
+
+    order_id = Column(Integer, primary_key=True, index=True)
+    item_json = Column(JSON)

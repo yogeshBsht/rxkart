@@ -1,9 +1,9 @@
 from pydantic import BaseModel
+from typing import List
 
 
 class ItemBase(BaseModel):
     title: str
-    description: str | None = None
 
 
 class ItemCreate(ItemBase):
@@ -11,7 +11,7 @@ class ItemCreate(ItemBase):
 
 
 class Item(ItemBase):
-    id: int
+    item_id: int
 
     class Config:
         orm_mode = True
@@ -26,8 +26,8 @@ class UserCreate(UserBase):
 
 
 class User(UserBase):
-    id: int
-    items: list[Item] = []
+    user_id: int
+    items: List[Item] = []
 
     class Config:
         orm_mode = True
