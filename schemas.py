@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Dict
 
 
 class ItemBase(BaseModel):
@@ -28,6 +28,21 @@ class UserCreate(UserBase):
 class User(UserBase):
     user_id: int
     items: List[Item] = []
+
+    class Config:
+        orm_mode = True
+
+
+class OrderBase(BaseModel):
+    item_json: Dict[int,int]
+
+
+class OrderCreate(OrderBase):
+    pass
+
+
+class Order(OrderBase):
+    order_id: int
 
     class Config:
         orm_mode = True

@@ -15,7 +15,7 @@ class Item(Base):
     __tablename__ = "items"
 
     item_id = Column(Integer, primary_key=True, index=True)
-    title = Column(String, index=True)
+    title = Column(String, index=True, unique=True)
     qty = Column(Integer, default=0)
 
 

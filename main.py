@@ -70,6 +70,22 @@ def read_items(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     items = crud.get_items(db, skip=skip, limit=limit)
     return items
 
+
+@app.post("/items/", response_model=schemas.Item)
+def create_item(item: schemas.ItemCreate, db: Session = Depends(get_db)):
+    return crud.create_item(db=db, item=item)
+
+
+@app.post("/order/", response_model=schemas.Order)
+def create_item(order: schemas.OrderCreate, db: Session = Depends(get_db)):
+    return crud.create_order(db=db, order=order)
+
+
+@app.get("/order/", response_model=List[schemas.Order])
+def read_order(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    orders = crud.get_orders(db, skip=skip, limit=limit)
+    return orders
+
 mykart = {}
 
 @app.get("/", response_class=HTMLResponse)
