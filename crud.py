@@ -24,13 +24,20 @@ def create_user(db: Session, user: schemas.UserCreate):
     return db_user
 
 
+def verify_user(db: Session, user: schemas.UserCreate):
+    fake_hashed_password = user.password + "notreallyhashed"
+    db_user = get_user_by_email(db, user.email)
+    if db_user.hashed_password == fake_hashed_password:
+        return True
+    return False
+
+
 def create_item(db: Session, item: schemas.ItemCreate):
     db_item = models.Item(title=item.title)
     db.add(db_item)
     db.commit()
     db.refresh(db_item)
     return db_item
-
 
 
 def create_order(db: Session, order: schemas.OrderCreate):
