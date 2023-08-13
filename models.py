@@ -81,6 +81,14 @@ class Order(Base):
     customer = relationship("User", back_populates="orders")
 
     @classmethod
+    def get_order_by_id(cls, order_id: int):
+        db = SessionLocal()
+        order = db.query(Order).filter(order_id=order_id).all()
+        db.close()
+        ordered_items = order[2]
+        return ordered_items
+
+    @classmethod
     def get_order_for_customer(cls, customer_id: int):
         db = SessionLocal()
         order = db.query(Order).filter(customer_id=customer_id).all()
