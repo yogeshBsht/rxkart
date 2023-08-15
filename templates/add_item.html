@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block body %}
+    <style>
+        .err { background: #ffe6ee; border: 1px solid #b1395f; }
+        .emsg { color: #c12020; font-weight: bold; }
+    </style>
+    
+    <h2>Add Item</h2>
+    <form action="" method="POST">
+        <label for="title">Name:</label>
+        <input type="text" id="title" name="title" required>
+        <div id="cname" class="emsg"></div>
+        <label for="qty">Quantity:</label>
+        <input type="number" id="qty" name="qty" required>
+        <input type="submit" value=Add />
+    </form>
+    
+    {% if error %}
+    <script>
+        field = document.getElementById("title");
+        error = document.getElementById("cname");
+        field.classList.add("err");
+        error.innerHTML = "Item already exists";
+    </script>  
+    {% endif %}
+{% endblock %}

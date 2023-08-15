@@ -7,7 +7,7 @@ class ItemBase(BaseModel):
 
 
 class ItemCreate(ItemBase):
-    pass
+    qty: int
 
 
 class Item(ItemBase):
@@ -34,11 +34,11 @@ class User(UserBase):
 
 
 class OrderBase(BaseModel):
-    item_json: Dict[int,int]
+    item_json: str
 
 
 class OrderCreate(OrderBase):
-    pass
+    customer_id: int
 
 
 class Order(OrderBase):

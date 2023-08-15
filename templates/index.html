@@ -2,20 +2,24 @@
 
 {% block body %}
     <h2>Medicine Details</h2>
-    <table border="1">
-        <tr>
-          <th>S.No.</th>
-          <th>Medicine</th>
-          <th>Qty</th>
-        </tr>
-        {% for medicine, qty in mykart.items() %}
-        <tr>
-          <td></td>
-          <td>{{medicine}}</td>
-          <td>{{qty}}</td>
-        </tr>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-3 sm-4"></div>
+        {% for x in mykart %}
+            <div class="card" style="width: 14rem;">
+              <img class="card-img-top" src="..." alt="Card image cap">
+              <div class="card-body">
+                <h5 class="card-title">{{x.title}}</h5>
+                <p class="card-text">Qty: {{x.qty}}</p>
+                <a href="#" class="btn btn-primary">Details</a>
+              </div>
+            </div>
+        {% else %}
+          <h3>No data to display</h3>
         {% endfor %}
-    </table>
+      </div>
+    </div>
+    <a href="/add_item" class="btn btn-primary" type="submit">Add Medicine</a>
     <script>
         var table = document.getElementsByTagName('table')[0],
         rows = table.getElementsByTagName('tr'),
@@ -24,5 +28,5 @@
       for (var i = 1, len = rows.length; i < len; i++) {
         rows[i].children[0][text] = i;
       }
-      </script>
+    </script>
 {% endblock %}

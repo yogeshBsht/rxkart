@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block body %}
+    <h2>myKart</h2>
+    {% if not mykart %}
+        <p>No item in kart. Add now!</p>
+    {% else %}
+    <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Item</th>
+            <th scope="col">Qty</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for k,v in mykart.items() %}
+            <tr>
+                <th scope="row">1</th>
+                <td>{{k}}</td>
+                <td>{{v}}</td>
+            </tr>          
+        {% endfor %}    
+        </tbody>
+    </table>
+    {% endif %}
+    <a href="/add_to_kart/{user_id}" class="btn btn-primary" type="submit">Add Medicine</a>
+    <script>
+        var table = document.getElementsByTagName('table')[0],
+        rows = table.getElementsByTagName('tr'),
+        text = 'textContent' in document ? 'textContent' : 'innerText';
+      
+      for (var i = 1, len = rows.length; i < len; i++) {
+        rows[i].children[0][text] = i;
+      }
+    </script>
+{% endblock %}

@@ -48,8 +48,8 @@ def create_order(db: Session, order: schemas.OrderCreate):
     return db_order
 
 
-def get_items(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Item).offset(skip).limit(limit).all()
+# def get_items(db: Session, skip: int = 0, limit: int = 100):
+#     return db.query(models.Item).offset(skip).limit(limit).all()
 
 def get_orders(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Order).offset(skip).limit(limit).all()
