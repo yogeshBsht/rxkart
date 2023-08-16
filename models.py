@@ -65,6 +65,9 @@ class Item(Base):
     title = Column(String, index=True, unique=True)
     qty = Column(Integer, default=0)
 
+    def __str__(self):
+        return f"{self.item_id}: {self.title}"
+
     @classmethod
     def get_items(cls, skip: int = 0, limit: int = 100):
         db = SessionLocal()
