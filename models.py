@@ -19,7 +19,6 @@ Base.metadata.create_all(bind=engine)
 #         db.close()
 
 
-
 class User(Base):
     __tablename__ = "users"
 
@@ -116,7 +115,7 @@ class Order(Base):
     @classmethod
     def create_order(cls, order: OrderCreate):
         kart_item = cls.get_order_for_customer(order.customer_id)
-        kart_item.update(order.item_json)
+        kart_item.update(json.loads(order.item_json))
         db = SessionLocal()
         db.add(kart_item)
         db.commit()

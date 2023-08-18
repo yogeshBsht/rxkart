@@ -2,12 +2,12 @@
 
 {% block body %}
     <h2>Add medicines</h2>
-    <form action="/add_to_kart/{user_id}" method="POST">
+    <form action="" method="POST">
         <label for="medicine">Select medicine(s):</label>
         <select name="medicine" id="medicine">
             {% for medicine in medicines %}
                 <p>
-                    <option value={{ medicine.title }}>{{ medicine.title }}</option>
+                    <option value={{ medicine.title }}>{{ medicine.title.capitalize() }}</option>
                 </p>
             {% endfor %}
         </select>

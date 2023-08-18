@@ -3,6 +3,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
+import json
 from sqlalchemy.orm import Session
 from typing import List
 
@@ -63,12 +64,23 @@ def get_user_kart(request:Request, user_id: int):
     })
 
 
+@app.get("/add_to_kart/{user_id}", response_class=HTMLResponse)
+def add_item_to_kart(request:Request, user_id: int):
+    error = None
+    return templates.TemplateResponse("home.html", {
+        "request": request, 
+        "medicines": Item.get_items(),
+        "error": error
+    })  
+
+
 @app.post("/add_to_kart/{user_id}", response_class=HTMLResponse)
-def add_item_to_kart(request:Request, user_id: int, title: str = Form(...), qty: int = Form(...)):
-    item = schemas.OrderCreate(item_json={title: qty}, customer_id=user_id)
+def add_item_to_kart(request:Request, user_id: int, medicine: str = Form(...), qty: int = Form(...)):
+# def add_item_to_kart(request:Request, user_id: int, qty: int = Form(...)):
+    item = schemas.OrderCreate(item_json=json.dumps({medicine: qty}), customer_id=user_id)
     error = None
     try: 
-        is_created = Order.create_order(item=item)
+        is_created = Order.create_order(item)
     except:
         error = "Item already exists" 
     return templates.TemplateResponse("home.html", {"request": request, "error": error})   
