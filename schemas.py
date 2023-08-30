@@ -25,6 +25,10 @@ class UserCreate(UserBase):
     password: str
 
 
+class UserUpdate(UserBase):
+    address: str
+
+
 class User(UserBase):
     user_id: int
     items: List[Item] = []
