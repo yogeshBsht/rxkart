@@ -73,6 +73,19 @@ def logout(request: Request):
     return RedirectResponse(redirect_url)
 
 
+@app.get("/profile", response_model=dict)
+def get_user_profile(request: Request):
+    user_id, email = request.session.get("session_id", [None, None])
+    if not user_id:
+        redirect_url = request.url_for('get_login_page')    
+        return RedirectResponse(redirect_url)
+    return templates.TemplateResponse("profile.html", {
+        "request": request,
+        "user_email": email,
+        "user": User.get_user_by_email(email)
+    })
+
+
 @app.get("/mykart", response_model=dict)
 def get_user_kart(request: Request):
     user_id, email = request.session.get("session_id", [None, None])

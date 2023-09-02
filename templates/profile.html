@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block body %}
+    <h2>My Profile</h2>
+    <h4>Name: {{user.name.capitalize()}}</h4>
+    <h4>Email-id: {{user.email}}</h4>
+    <h4>Address: {{user.address}}</h4>
+{% endblock %}
