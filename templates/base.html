@@ -4,34 +4,33 @@
         <title>Rx-Kart</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', path='/style.css') }}">
-        <!-- <h1>JanAushadhi: For Health & Happiness</h1> -->
         <hr>
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
-                <a class="navbar-brand" href="#">JanAushadhi: For Health & Happiness</a>
+                <a class="navbar-brand" href="/">JanAushadhi: For Health & Happiness</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ml-auto">
-                        {% if user_logged_in %}
+                        {% if user_email %}
                         <!-- Display username and Logout options when logged in -->
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Welcome, {{ username }}</a>
+                            <a class="nav-link" href="{{url_for('get_user_kart')}}">Welcome, {{ user_email }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">LogOut</a>
+                            <a class="nav-link" href="{{url_for('logout')}}">Log Out</a>
                         </li>
                         {% else %}
                         <!-- Display SignIn/Register options when not logged in -->
                         <li class="nav-item">
-                            <a class="nav-link" href="#">SignIn</a>
+                            <a class="nav-link" href="{{url_for('get_login_page')}}">Sign In</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Register</a>
+                            <a class="nav-link" href="{{url_for('get_registration_page')}}">Register</a>
                         </li>
                         {% endif %}
                     </ul>
@@ -40,8 +39,6 @@
         </nav>
     
         <div class="container mt-4">
-            <!-- <h1>JanAushadhi: For Health & Happiness</h1> -->
-            <hr>
             {% block body %}
             {% endblock %}
         </div>

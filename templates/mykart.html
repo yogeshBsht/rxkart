@@ -11,20 +11,24 @@
             <th scope="col">#</th>
             <th scope="col">Item</th>
             <th scope="col">Qty</th>
+            <th scope="col">Price</th>
+            <th scope="col">Net Price</th>
           </tr>
         </thead>
         <tbody>
-        {% for k,v in mykart.items() %}
+        {% for title, qty, price, total_price in mykart %}
             <tr>
               <th scope="row">1</th>
-              <td>{{k}}</td>
-              <td>{{v}}</td>
+              <td>{{title}}</td>
+              <td>{{qty}}</td>
+              <td>{{price}}</td>
+              <td>{{total_price}}</td>
             </tr>          
         {% endfor %}    
         </tbody>
     </table>
     {% endif %}
-    <a href="{{'/add_to_kart/%s'%user_id}}" class="btn btn-primary" type="submit">Add Medicine</a>
+    <a href="{{url_for('get_add_item_to_kart_page')}}" class="btn btn-primary" type="submit">Add Medicine</a>
     <script>
         var table = document.getElementsByTagName('table')[0],
         rows = table.getElementsByTagName('tr'),

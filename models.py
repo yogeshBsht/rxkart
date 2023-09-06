@@ -4,7 +4,7 @@ from fastapi import Depends
 from sqlalchemy import Column, Integer, String, JSON, ForeignKey
 from sqlalchemy.orm import Session, relationship
 
-from schemas import UserCreate, UserUpdate, ItemCreate, OrderCreate
+from schemas import UserCreate, UserUpdate, ItemCreate, OrderCreate, CartCreate
 
 
 Base.metadata.create_all(bind=engine)
@@ -27,6 +27,7 @@ class User(Base):
     email = Column(String, unique=True, index=True)
     hashed_password = Column(String)
     address = Column(String)
+    carts = relationship("Cart", back_populates="customer")
     orders = relationship("Order", back_populates="customer")
 
     def __str__(self):
@@ -77,8 +78,9 @@ class Item(Base):
 
     item_id = Column(Integer, primary_key=True, index=True)
     title = Column(String, index=True, unique=True)
-    qty = Column(Integer, default=0)
+    # qty = Column(Integer, default=0)
     price = Column(Integer, default=0)
+    carts = relationship("Cart", back_populates="items")
 
     def __str__(self):
         return f"{self.item_id}: {self.title}"
@@ -99,6 +101,57 @@ class Item(Base):
         db.refresh(db_item)
         db.close()
         return item
+
+
+class Cart(Base):
+    __tablename__ = "cart"
+
+    id = Column(Integer, primary_key=True, index=True)
+    item_id = Column(Integer, ForeignKey('items.item_id'))
+    qty = Column(Integer)
+    customer_id = Column(Integer, ForeignKey('users.user_id'))
+    items = relationship("Item", back_populates="carts")
+    customer = relationship("User", back_populates="carts")
+
+    def __str__(self):
+        return f"OrderId-{self.id}, ItemId-{self.item_id}, CustomerId-{self.customer_id}"
+
+    # @classmethod
+    # def get_order_by_id(cls, order_id: int):
+    #     """Get ordered items for the order_id"""
+    #     db = SessionLocal()
+    #     order = db.query(cls).filter(cls.order_id==order_id).first()
+    #     db.close()
+    #     ordered_items = json.loads(order.ordered_items) if order else {}
+    #     return ordered_items
+
+    @classmethod
+    def get_cart_items_for_customer(cls, customer_id: int):
+        """Get cart items for the customer_id"""
+        db = SessionLocal()
+        cart = db.query(cls, Item).filter(cls.item_id==Item.item_id).filter(cls.customer_id==customer_id).all()
+        db.close()
+        cart_items = []
+        if cart:
+            for crt,itm in cart:
+                cart_items.append((itm.title, crt.qty, itm.price, crt.qty*itm.price))
+        return cart_items
+    
+    @classmethod
+    def create_entry(cls, entry: CartCreate):
+        """Create or update the order"""
+        db = SessionLocal()
+        cust_order = db.query(cls).filter(cls.customer_id==entry.customer_id).filter(cls.item_id==entry.item_id).first()
+        if cust_order:
+            cust_order.qty = entry.qty
+            db.commit()
+        else:
+            new_entry = cls(customer_id=entry.customer_id, item_id=entry.item_id, qty=entry.qty)
+            db.add(new_entry)
+            db.commit()
+            db.refresh(new_entry)
+        db.close()
+        return True
 
 
 class Order(Base):

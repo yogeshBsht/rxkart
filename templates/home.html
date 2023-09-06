@@ -7,7 +7,7 @@
         <select name="medicine" id="medicine">
             {% for medicine in medicines %}
                 <p>
-                    <option value={{ medicine.title }}>{{ medicine.title.capitalize() }}</option>
+                    <option value={{ medicine.item_id }}>{{medicine.item_id}}{{ medicine.title.capitalize()}}: Rs.{{medicine.price}}</option>
                 </p>
             {% endfor %}
         </select>

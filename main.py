@@ -6,7 +6,7 @@ from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
 
 import schemas
-from models import User, Item, Order
+from models import User, Item, Cart
 
 
 app = FastAPI()
@@ -95,12 +95,12 @@ def get_user_kart(request: Request):
     return templates.TemplateResponse("mykart.html", {
         "request": request,
         "user_email": email,
-        "mykart": Order.get_order_for_customer(user_id)
+        "mykart": Cart.get_cart_items_for_customer(user_id)
     })
 
 
 @app.get("/add_to_kart", response_class=HTMLResponse)
-def add_item_to_kart(request: Request):
+def get_add_item_to_kart_page(request: Request):
     user_id, email = request.session.get("session_id", [None, None])
     if not user_id:
         redirect_url = request.url_for('get_login_page')    
@@ -118,11 +118,12 @@ def add_item_to_kart(request: Request, medicine: str = Form(...), qty: int = For
     if not user_id:
         redirect_url = request.url_for('get_login_page')    
         return RedirectResponse(redirect_url)
-    item = schemas.OrderCreate(
-        item_json=json.dumps({medicine: qty}), 
+    cart_entry = schemas.CartCreate(
+        item_id=int(medicine),
+        qty=qty,
         customer_id=user_id
     )
-    is_created = Order.create_order(item)
+    is_created = Cart.create_entry(cart_entry)
     return templates.TemplateResponse("home.html", {
         "request": request,
         "user_email": email,

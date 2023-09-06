@@ -50,3 +50,9 @@ class Order(OrderBase):
 
     class Config:
         orm_mode = True
+
+
+class CartCreate(BaseModel):
+    item_id: int
+    qty: int
+    customer_id: int
