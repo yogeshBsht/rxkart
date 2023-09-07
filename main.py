@@ -131,6 +131,19 @@ def add_item_to_kart(request: Request, medicine: str = Form(...), qty: int = For
     })
 
 
+@app.get("/checkout", response_model=dict)
+def get_checkout_page(request: Request):
+    user_id, email = request.session.get("session_id", [None, None])
+    if not user_id:
+        redirect_url = request.url_for('get_login_page')    
+        return RedirectResponse(redirect_url)
+    return templates.TemplateResponse("checkout.html", {
+        "request": request,
+        "user_email": email,
+        "mykart": Cart.get_cart_items_for_customer(user_id)
+    })
+
+
 @app.get("/add_item", response_class=HTMLResponse)
 def add_item(request: Request):
     return templates.TemplateResponse("add_item.html", {"request": request, "error": None})

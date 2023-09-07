@@ -27,10 +27,10 @@
         {% endfor %}    
         </tbody>
     </table>
+    <p>Amount to pay: Rs {{mykart|sum(attribute=3)}}</p>
     {% endif %}
-    <a href="{{url_for('get_add_item_to_kart_page')}}" class="btn btn-primary" type="submit">Add Medicine</a>
-    <a href="{{url_for('get_checkout_page')}}" class="btn btn-success" type="submit">Check Out</a>
-    <script>
+    <a href="{{url_for('get_add_item_to_kart_page')}}" class="btn btn-success" type="submit">Pay</a>
+    <!-- <script>
         var table = document.getElementsByTagName('table')[0],
         rows = table.getElementsByTagName('tr'),
         text = 'textContent' in document ? 'textContent' : 'innerText';
@@ -38,5 +38,5 @@
       for (var i = 1, len = rows.length; i < len; i++) {
         rows[i].children[0][text] = i;
       }
-    </script>
+    </script> -->
 {% endblock %}

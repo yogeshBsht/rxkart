@@ -19,7 +19,7 @@
                         {% if user_email %}
                         <!-- Display username and Logout options when logged in -->
                         <li class="nav-item">
-                            <a class="nav-link" href="{{url_for('get_user_kart')}}">Welcome, {{ user_email }}</a>
+                            <a class="nav-link" href="{{url_for('get_user_profile')}}">Welcome, {{ user_email }}</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{url_for('logout')}}">Log Out</a>
