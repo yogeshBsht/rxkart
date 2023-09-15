@@ -6,7 +6,8 @@ from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
 
 import schemas
-from models import User, Item, Cart
+from models import User, Item, Cart, Order
+from payment import create_payment
 
 
 app = FastAPI()
@@ -112,6 +113,19 @@ def get_add_item_to_kart_page(request: Request):
     })
 
 
+@app.get("/myorders", response_model=dict)
+def get_user_orders(request: Request):
+    user_id, email = request.session.get("session_id", [None, None])
+    if not user_id:
+        redirect_url = request.url_for('get_login_page')    
+        return RedirectResponse(redirect_url)
+    return templates.TemplateResponse("myorders.html", {
+        "request": request,
+        "user_email": email,
+        "orders": Order.get_order_for_customer(user_id)
+    })
+
+
 @app.post("/add_to_kart", response_class=HTMLResponse)
 def add_item_to_kart(request: Request, medicine: str = Form(...), qty: int = Form(...)):
     user_id, email = request.session.get("session_id", [None, None])
@@ -142,6 +156,21 @@ def get_checkout_page(request: Request):
         "user_email": email,
         "mykart": Cart.get_cart_items_for_customer(user_id)
     })
+
+
+@app.post("/checkout", response_model=dict)
+async def process_checkout(request: Request, amount: int = Form(...)):
+    user_id, email = request.session.get("session_id", [None, None])
+    if not user_id:
+        redirect_url = request.url_for('get_login_page')    
+        return RedirectResponse(redirect_url)
+
+    resp = await create_payment(amount)
+    if resp and resp.get("clientSecret"):
+        order = schemas.OrderCreate(amount=amount, customer_id=user_id)
+        Order.create_order(order)
+    redirect_url = request.url_for('get_user_kart')    
+    return RedirectResponse(redirect_url, status_code=status.HTTP_303_SEE_OTHER)
 
 
 @app.get("/add_item", response_class=HTMLResponse)
