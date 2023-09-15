@@ -1,5 +1,6 @@
 from pydantic import BaseModel
-from typing import List, Dict
+from typing import List
+from datetime import datetime
 
 
 class ItemBase(BaseModel):
@@ -41,8 +42,10 @@ class OrderBase(BaseModel):
     item_json: str
 
 
-class OrderCreate(OrderBase):
+class OrderCreate(BaseModel):
     customer_id: int
+    order_date: str = datetime.utcnow()
+    amount: float
 
 
 class Order(OrderBase):
