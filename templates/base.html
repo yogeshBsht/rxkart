@@ -4,25 +4,32 @@
         <title>Rx-Kart</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', path='/style.css') }}">
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <hr>
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
                 <a class="navbar-brand" href="/">JanAushadhi: For Health & Happiness</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ml-auto">
                         {% if user_email %}
                         <!-- Display username and Logout options when logged in -->
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{url_for('get_user_profile')}}">Welcome, {{ user_email }}</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{url_for('logout')}}">Log Out</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ user_email }}
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                              <a class="dropdown-item" href="{{url_for('get_user_profile')}}">Profile</a>
+                              <a class="dropdown-item" href="{{url_for('get_user_orders')}}">Orders</a>
+                              <div class="dropdown-divider"></div>
+                              <a class="dropdown-item" href="{{url_for('logout')}}">Logout</a>
+                            </div>
                         </li>
                         {% else %}
                         <!-- Display SignIn/Register options when not logged in -->
