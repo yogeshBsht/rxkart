@@ -29,11 +29,15 @@
     </table>
     {% endif %}
     <a href="{{url_for('get_add_item_to_kart_page')}}" class="btn btn-primary" type="submit">Add Medicine</a>
-    <a href="{{url_for('get_checkout_page')}}" class="btn btn-success" type="submit">Check Out</a>
+    {% if mykart %}
+      <a href="{{url_for('get_checkout_page')}}" class="btn btn-success" type="submit">Check Out</a>
+    {% else %}  
+      <a href="{{url_for('get_checkout_page')}}" class="btn btn-success disabled" aria-disabled="true" type="submit">Check Out</a>
+    {% endif %}
     <script>
-        var table = document.getElementsByTagName('table')[0],
-        rows = table.getElementsByTagName('tr'),
-        text = 'textContent' in document ? 'textContent' : 'innerText';
+      var table = document.getElementsByTagName('table')[0],
+      rows = table.getElementsByTagName('tr'),
+      text = 'textContent' in document ? 'textContent' : 'innerText';
       
       for (var i = 1, len = rows.length; i < len; i++) {
         rows[i].children[0][text] = i;
